@@ -5,28 +5,28 @@ import CountryCase from "./Components/CountryCase";
 import axios from "axios";
 
 function App() {
-  const [globalCase, setGlobalCase] = useState({});
-  const [globalCaseHistory, setGlobalCaseHistory] = useState([]);
+  const [globalCases, setGlobalCases] = useState({});
+  const [globalHistory, setGlobalHistory] = useState({});
 
-  const [countryCase, setCountryCase] = useState({});
-  const [countryCaseHistory, setCountryCaseHistory] = useState([]);
+  const [countryCases, setCountryCases] = useState({});
+  const [countryHistory, setCountryHistory] = useState([]);
+  const [countryGeolocation, setCountryGeolocation] = useState();
 
   const [theme, setTheme] = useState("light");
 
   useEffect(() => {
-    fetchData("https://corona.lmao.ninja/v2/all?yesterday", setGlobalCase);
-    fetchData("https://covid19-api.org/api/timeline", setGlobalCaseHistory);
+    fetchData("https://covid19-api.org/api/timeline", setGlobalCases);
     fetchData(
-      "https://corona.lmao.ninja/v2/countries/ph?yesterday=true&strict=true&query",
-      setCountryCase
+      `https://covid19-api.org/api/timeline/:country=ph`,
+      setCountryCases
     );
   }, []);
 
   return (
     <div className={`app ${theme}`}>
       <div className="app__container">
-        <GlobalCase global={globalCase} history={globalCaseHistory} />
-        <CountryCase country={countryCase} />
+        {/* <GlobalCase cases={globalHistory[globalCase.length - 1]} /> */}
+        {/* <CountryCase /> */}
       </div>
     </div>
   );
@@ -38,5 +38,7 @@ function fetchData(url, callback) {
     .then((res) => callback(res.data))
     .catch((err) => console.log(err));
 }
+
+function getHistory(data) {}
 
 export default App;
