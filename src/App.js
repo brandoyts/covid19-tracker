@@ -12,16 +12,19 @@ class App extends Component {
 
   async componentDidMount() {
     const res = await axios.get("https://api.covid19api.com/summary");
-
     this.setState(res.data);
+    console.log("will mount");
   }
 
   render() {
+    console.log("render");
     return (
       <div className={`app`}>
-        <div className="app__container">
-          <GlobalCases global={this.state.Global} />
-          {/* <CountryCases /> */}
+        <div className="app__backgroundOverlay">
+          <div className="app__container">
+            <GlobalCases global={this.state.Global} />
+            {/* <CountryCases /> */}
+          </div>
         </div>
       </div>
     );
