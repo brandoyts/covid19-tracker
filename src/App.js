@@ -1,36 +1,58 @@
-import React, { useState, useEffect } from "react";
+import React, { Component, useState, useEffect } from "react";
 import "./App.css";
-import GlobalCase from "./Components/GlobalCase";
-import CountryCase from "./Components/CountryCase";
+import GlobalCases from "./Components/GlobalCases";
+import CountryCases from "./Components/CountryCases";
 import axios from "axios";
 
-function App() {
-  const [globalCases, setGlobalCases] = useState({});
-  const [globalHistory, setGlobalHistory] = useState({});
+class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
 
-  const [countryCases, setCountryCases] = useState({});
-  const [countryHistory, setCountryHistory] = useState([]);
-  const [countryGeolocation, setCountryGeolocation] = useState();
+  async componentDidMount() {
+    const res = await axios.get("https://api.covid19api.com/summary");
 
-  const [theme, setTheme] = useState("light");
+    this.setState(res.data);
+  }
 
-  useEffect(() => {
-    fetchData("https://covid19-api.org/api/timeline", setGlobalCases);
-    fetchData(
-      `https://covid19-api.org/api/timeline/:country=ph`,
-      setCountryCases
-    );
-  }, []);
-
-  return (
-    <div className={`app ${theme}`}>
-      <div className="app__container">
-        {/* <GlobalCase cases={globalHistory[globalCase.length - 1]} /> */}
-        {/* <CountryCase /> */}
+  render() {
+    return (
+      <div className={`app`}>
+        <div className="app__container">
+          <GlobalCases global={this.state.Global} />
+          {/* <CountryCases /> */}
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
 }
+
+// function App() {
+//   const [globalCases, setGlobalCases] = useState({});
+// const [globalHistory, setGlobalHistory] = useState({});
+
+// const [countryCases, setCountryCases] = useState({});
+// const [countryHistory, setCountryHistory] = useState([]);
+// const [countryGeolocation, setCountryGeolocation] = useState();
+
+//   useEffect(() => {
+//     fetchData("https://api.covid19api.com/summary", setGlobalCases);
+//   }, []);
+
+//   if (globalCases) {
+//     console.log(globalCases.Global);
+//   }
+
+//   return (
+//     <div className={`app`}>
+//       <div className="app__container">
+//         <GlobalCases global={globalCases.Global} />
+//         {/* <CountryCases /> */}
+//       </div>
+//     </div>
+//   );
+// }
 
 function fetchData(url, callback) {
   axios
@@ -39,6 +61,8 @@ function fetchData(url, callback) {
     .catch((err) => console.log(err));
 }
 
-function getHistory(data) {}
+// function getTotalCases(data) {
+//   console.log(data);
+// }
 
 export default App;

@@ -1,0 +1,4 @@
+.countryCases {
+  display: flex;
+  flex-direction: column;
+}
